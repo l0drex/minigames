@@ -13,7 +13,7 @@ class Hangman(Game):
         self.words = self.get_wordlist()
         self.running: bool = len(self.words) > 0
 
-    def get_info(self, key = None) -> Dict:
+    def get_info(self, key=None) -> Dict:
         """
         Returns some meta info about the game.
         """

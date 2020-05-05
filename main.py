@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
-import random, sys, os
+import random
+import sys
+import os
 from typing import List
 from player import Player
 from games import skribble, hangman
@@ -21,7 +23,7 @@ class Main(object):
 
         i = 0
         for game in games:
-            print('[%i] ' % (i, ) + game.get_info(key = 'name'))
+            print('[%i] ' % (i, ) + game.get_info(key='name'))
             i += 1
         i = (int)(input('Spiel: '))
 
@@ -113,8 +115,8 @@ class Main(object):
         multiplayer: bool = len(self.players) > 1
         print()
 
-        self.players = self.set_players(game.get_info(key = 'player_min'),
-                                        game.get_info(key = 'player_max'))
+        self.players = self.set_players(game.get_info(key='player_min'),
+                                        game.get_info(key='player_max'))
 
         game.start()
 

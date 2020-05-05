@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from typing import Dict, Optional
+from typing import Dict
 
 
 class Game:
@@ -10,11 +10,11 @@ class Game:
         self.guess: str
         self.running: bool = not (self.get_guess == self.get_solution)
 
-    def get_info(self, key = None) -> Dict:
+    def get_info(self, key=None) -> Dict:
         """
         Returns a dictionary with some meta information about the game,
         or you can ask for a specific information
-        
+
         :name: the name of the game
         :description
         """
@@ -77,7 +77,7 @@ class Game:
         :return: 0 if player lost, 1 if won,
             2 if undefined (e.g. all multiplayers)
         """
-        
+
         raise NotImplementedError
 
         self.set_solution('Solution')
