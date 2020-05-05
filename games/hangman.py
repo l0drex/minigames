@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
+from typing import Dict, List
 import random
-from typing import List
 from .game import Game
 
 
@@ -10,60 +10,90 @@ class Hangman(Game):
         # its a game
         super(Game, self).__init__()
 
-        self.name = 'Hangman'
-        self.description = 'Guess the word before you run out of guesses.'
-        self.player_min = 1
-        self.player_max = 1
-
         self.words = self.get_wordlist()
         self.running: bool = len(self.words) > 0
-        self.solution: str
 
-    def get_name(self):
-        return self.name
+    def get_info(self, key = None) -> Dict:
+        """
+        Returns some meta info about the game.
+        """
+        info: Dict = {
+            'name': 'Hangman',
+            'description': 'Guess the word before you run out of guesses.',
+            'player_min': 1,
+            'player_max': 1
+            }
+        if key is not None:
+            try:
+                return info[key]
+            except KeyError:
+                return None
+        else:
+            return info
 
-    def gameround(self) -> int:
+        return info
+
+    def gameround(self, players) -> int:
         """
         What should happen every round?
         """
-        # generate a random word
-        n = random.randint(0, (len(self.words)-1))
-        self.solution = self.words.pop(n).casefold()
 
         # count mistakes
-        tries_left: int = 11
+        self.tries_left: int = 11
 
         # create guessed word
-        guessed: List = []
+        self.guessed: List = []
 
         # letters guessed
-        letters: List = []
+        self.letters: List = []
 
+        # define the solution
+        if len(players) > 1:
+            self.multiplayer()
+        else:
+            self.singleplayer()
+
+        # let the player guess
         for letter in self.solution:
-            guessed.append('_')
+            self.guessed.append('_')
 
-        while not(''.join(guessed) == self.solution):
-            print(''.join(guessed))
+        while not(''.join(self.guessed) == self.solution):
+            print(''.join(self.guessed))
 
-            inp: str = input('Buchstabe: ').casefold()
+            # choose a letter
+            inp: chr = input('Buchstabe: ').casefold()
             if inp == '':
                 if input('Abbrechen? ') == 'j':
-                    return 0
-            elif inp in letters:
+                    end = 0
+            elif inp in self.letters:
                 print('Das hast du schon versucht.')
             elif inp in self.solution:
                 print('Korrekt!')
-                letters.append(inp)
+                self.letters.append(inp)
                 for i in range(len(self.solution)):
                     if inp == self.solution[i]:
-                        guessed[i] = inp
+                        self.guessed[i] = inp
             else:
                 print('Leider falsch.')
-                letters.append(inp)
-                tries_left -= 1
-                print('%i Versuche übrig.' % (tries_left, ))
+                self.letters.append(inp)
+                self.tries_left -= 1
+                print('%i Versuche übrig.' % (self.tries_left, ))
 
-                if tries_left <= 0:
-                    return 0
+                if self.tries_left <= 0:
+                    end = 0
 
-        return 1
+        end = 1
+
+        if end == 0:
+            print('The solution was ' + self.get_solution())
+
+        return end
+
+    def singleplayer(self):
+        # generate a random word
+        n = random.randint(0, (len(self.words)-1))
+        self.set_solution(self.words.pop(n).casefold())
+
+    def multiplayer(self):
+        # let the player choose a word
+        self.set_solution(input('Zu erratendes Wort: '))

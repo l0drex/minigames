@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import random
+import random, sys, os
 from typing import List
 from player import Player
 from games import skribble, hangman
@@ -21,7 +21,7 @@ class Main(object):
 
         i = 0
         for game in games:
-            print('[%i] ' % (i, ) + game.get_name())
+            print('[%i] ' % (i, ) + game.get_info(key = 'name'))
             i += 1
         i = (int)(input('Spiel: '))
 
@@ -110,15 +110,11 @@ class Main(object):
     def main(self):
         print('Willkommen bei Lahoumy.')
         game = self.get_game()
-        multiplayer: bool = game.get_mode() > 0
-        if game.get_mode() > 1:
-            multiplayer = True
-        else:
-            multiplayer = False
+        multiplayer: bool = len(self.players) > 1
         print()
 
-        self.players = self.set_players(game.get_player_min(),
-                                        game.get_player_max())
+        self.players = self.set_players(game.get_info(key = 'player_min'),
+                                        game.get_info(key = 'player_max'))
 
         game.start()
 
@@ -130,7 +126,10 @@ class Main(object):
             if multiplayer:
                 print('Es spielt {}'.format(player.get_name()))
 
-            won = game.gameround()
+            # play one gameround
+            won = game.gameround(self.players)
+
+            # add points to the players
             player.add_round(1)
 
             if multiplayer:
@@ -138,8 +137,10 @@ class Main(object):
                 if player_new is not None:
                     player.add_point(1)
                     player_new.add_point(2)
+                    # the winner is the next player
                     player = player_new
             else:
+                # in singleplayer
                 if won:
                     player.add_point(1)
 
@@ -155,4 +156,11 @@ class Main(object):
 
 
 if __name__ == '__main__':
-    Main().main()
+    try:
+        Main().main()
+    except KeyboardInterrupt:
+        print('\nInterrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
