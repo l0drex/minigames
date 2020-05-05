@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 import random
+from typing import List
 from .game import Game
+
 
 class Hangman(Game):
     def __init__(self):
@@ -16,7 +18,7 @@ class Hangman(Game):
         self.words = self.get_wordlist()
         self.running: bool = len(self.words) > 0
         self.solution: str
-        
+
     def get_name(self):
         return self.name
 
@@ -64,6 +66,4 @@ class Hangman(Game):
                 if tries_left <= 0:
                     return 0
 
-
         return 1
-

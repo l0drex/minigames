@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+
 class Game:
     def __init__(self):
         # name of the game
@@ -11,16 +12,16 @@ class Game:
         # False if gameover
         self.running: bool = True
         self.solution: str
-        
+
     def get_name(self):
         return self.name
-    
+
     def get_player_max(self):
-        return self.get_player_max
+        return self.player_max
 
     def get_player_min(self):
         return self.player_min
-    
+
     def get_running(self) -> bool:
         return self.running
 
@@ -49,7 +50,8 @@ class Game:
     def gameround(self) -> int:
         """
         What should happen every round?
-        :return: 0 if player lost, 1 if won, 2 if undefined (e.g. all multiplayers)
+        :return: 0 if player lost, 1 if won,
+            2 if undefined (e.g. all multiplayers)
         """
         self.solution = 'Solution'
         return 1
@@ -73,5 +75,5 @@ class Game:
 
         print('{} Wörter gefunden.'.format(len(words)))
         print()
-        
+
         return words
