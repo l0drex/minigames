@@ -5,39 +5,44 @@ from typing import List
 from player import Player
 from games import skribble, hangman
 
+
 class Main(object):
-    
+
     def __init__(self):
-        self.players: List
-        self.singleplayer: bool
-        
+        self.players: List = []
+
     def get_game(self):
         print('Suche dir ein Spiel aus:')
 
         games = [
             skribble.Skribble(),
-            hangman.Hangman()]
+            hangman.Hangman()
+            ]
 
         i = 0
         for game in games:
             print('[%i] ' % (i, ) + game.get_name())
             i += 1
         i = (int)(input('Spiel: '))
-        
+
         return games[i]
 
-    def get_players(self):
+    def set_players(self, player_min: int, player_max: int):
         """
         Returns a list of all players in the game.
+        :param player_min: minimum required players
+        :param player_max: maximum required players
         """
-        players = []
+        players: List = []
         name: str = ' '
-        while name != '':
+        print('Geben Sie bitte n Spielernamen an, wobei %i <= n <= %i'
+              % (player_min, player_max))
+        while (name != '') and (len(players) < player_max):
             name = input('Spieler {}: '.format(len(players)+1))
             if name != '':
                 players.append(Player(name))
-        if len(players) < 2:
-            self.singleplayer = True
+            elif len(players) < player_min:
+                name = ' '
 
         print()
         print('{} Spieler registriert.'.format(len(players)))
@@ -65,7 +70,7 @@ class Main(object):
         """
         Returns the winner of a round.
         """
-        winner: Player
+        winner: Player = ''
         inp = ''
         while inp == '' or winner == player:
             inp = input('Wer hat gewonnen? ')
@@ -84,7 +89,7 @@ class Main(object):
                     break
 
         return winner
-    
+
     def get_winner(self):
         """
         Returns the winner of the game.
@@ -98,22 +103,22 @@ class Main(object):
                     if value >= points_winner:
                         winner = player
             print()
-        
+
         print('Der Gewinner ist: ' + winner.get_name())
         return winner
 
     def main(self):
         print('Willkommen bei Lahoumy.')
-        game: Game = self.get_game()
+        game = self.get_game()
         multiplayer: bool = game.get_mode() > 0
         if game.get_mode() > 1:
-            if self.players > 1:
-                multiplayer = True
-            else:
-                multiplayer = False
+            multiplayer = True
+        else:
+            multiplayer = False
         print()
-        
-        self.players = self.get_players()
+
+        self.players = self.set_players(game.get_player_min(),
+                                        game.get_player_max())
 
         game.start()
 
@@ -139,7 +144,7 @@ class Main(object):
                     player.add_point(1)
 
             if input('Neue Runde ') == 'n':
-                break;
+                break
 
             print()
 
@@ -147,6 +152,7 @@ class Main(object):
 
         game.end()
         self.get_winner()
+
 
 if __name__ == '__main__':
     Main().main()
