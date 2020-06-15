@@ -1,37 +1,22 @@
-#!/usr/bin/python3
-
-from typing import Dict, List
-import random
-from .game import Game
+from typing import List, Dict
+from .textgame import TextGame
 
 
-class Hangman(Game):
+class Hangman(TextGame):
+
     def __init__(self):
         # its a game
-        super(Game, self).__init__()
+        super(TextGame, self).__init__()
 
-        self.words = self.get_wordlist()
-        self.running: bool = len(self.words) > 0
-
-    def get_info(self, key=None) -> Dict:
-        """
-        Returns some meta info about the game.
-        """
-        info: Dict = {
+        self.info: Dict = {
             'name': 'Hangman',
             'description': 'Guess the word before you run out of guesses.',
             'player_min': 1,
             'player_max': 1
             }
-        if key is not None:
-            try:
-                return info[key]
-            except KeyError:
-                return None
-        else:
-            return info
 
-        return info
+        self.words = self.get_wordlist()
+        self.running: bool = len(self.words) > 0
 
     def gameround(self, players) -> int:
         """
@@ -91,8 +76,7 @@ class Hangman(Game):
 
     def singleplayer(self):
         # generate a random word
-        n = random.randint(0, (len(self.words)-1))
-        self.set_solution(self.words.pop(n).casefold())
+        self.set_solution(self.get_word().casefold())
 
     def multiplayer(self):
         # let the player choose a word

@@ -1,32 +1,25 @@
 #!/usr/bin/python3
 
-from typing import Dict
 import random
-from .game import Game
+from typing import Dict
+from .textgame import TextGame
 
 
-class Skribble(Game):
+class Skribble(TextGame):
+
     def __init__(self):
         # its a game
-        super(Game, self).__init__()
+        super(TextGame, self).__init__()
 
-        self.words: [str] = self.get_wordlist()
-        self.running: bool = len(self.words) > 0
-
-    def get_info(self, key=None) -> Dict:
-        """
-        Returns some meta info about the game.
-        """
-        info: Dict = {
+        self.info: Dict = {
             'name': 'Skribble',
             'description': 'Draw a random word. The others have to guess it.',
             'player_min': 2,
-            'player_max': 10
+            'player_max': 10,
             }
-        if key is not None:
-            return info[key]
-        else:
-            return info
+
+        self.words: [str] = self.get_wordlist()
+        self.running: bool = len(self.words) > 0
 
     def gameround(self, players):
         """

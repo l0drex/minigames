@@ -1,14 +1,18 @@
-#!/usr/bin/python3
-
 from typing import Dict
 
 
-class Game:
+class Game():
     def __init__(self):
-        # False if gameover
+        self.info: Dict = {
+            'name': 'Game',
+            'description': 'An example game.',
+            'player_min': 1,
+            'player_max': 10
+            }
+
+        self.running: bool = not (self.get_guess == self.get_solution)
         self.solution: str
         self.guess: str
-        self.running: bool = not (self.get_guess == self.get_solution)
 
     def get_info(self, key=None) -> Dict:
         """
@@ -18,21 +22,14 @@ class Game:
         :name: the name of the game
         :description
         """
-        raise NotImplementedError
 
-        info: Dict = {
-            'name': 'Game',
-            'description': 'An example game.',
-            'player_min': 1,
-            'player_max': 10
-            }
         if key is not None:
             try:
-                return info[key]
+                return self.info[key]
             except KeyError:
                 return None
         else:
-            return info
+            return self.info
 
     def get_running(self) -> bool:
         return self.running
@@ -42,19 +39,6 @@ class Game:
 
     def get_guess(self):
         return self.guess
-
-    def get_wordlist(self) -> [str]:
-        """
-        Returns a list of words saved in ./src/words.txt.
-        """
-        with open('./games/src/words.txt', 'r') as file:
-            words = file.readlines()
-        words = [s.strip() for s in words]
-
-        print('{} Wörter gefunden.'.format(len(words)))
-        print()
-
-        return words
 
     def set_solution(self, solution):
         """
