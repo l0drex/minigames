@@ -13,7 +13,6 @@ class Game:
         self.running: bool = not (self.get_guess == self.get_solution)
         self.solution: str = ''
         self.guess: str = ''
-        self.multiplayer_mode = False
 
     def get_info(self, key=None):
         """
@@ -46,20 +45,17 @@ class Game:
         Returns the winner of a round.
         """
 
-        if not self.multiplayer_mode:
-            return None
-
         self.winner = ''
         inp = ''
         while inp == '' or self.winner == player:
-            inp = input('Wer hat gewonnen? ')
+            inp = input('Who won? ')
             if inp == '':
-                if input('Niemand? (j/n) ') == 'j':
+                if input('Nobody? (j/n) ') == 'j':
                     self.winner = None
                     break
             elif inp == player.get_name():
                 # if input winner was player in current round
-                print('Der hat gespielt.')
+                print('This one has played.')
                 inp = ''
             else:
                 # set winner
@@ -76,36 +72,14 @@ class Game:
         """
         What happens before the first round?
         """
-        print('Willkommen bei ' + self.get_info('name'))
+        print('Welcome to ' + self.get_info('name'))
         print(self.get_info('description'))
         print()
 
-    def play(self, players) -> int:
+    def play(self) -> int:
         """
         What should happen every round?
-        :param players: list of players in the game
-        :return: 0 if player lost, 1 if won,
-            2 if undefined (e.g. all multiplayers)
-        """
-
-        self.multiplayer_mode = players is not None
-
-        self.solution = 'Solution'
-
-        if len(players) > 1:
-            return self.multiplayer(players)
-        else:
-            return self.singleplayer(players[0])
-
-    def singleplayer(self, players) -> int:
-        """
-        The singleplayer mode.
-        """
-        raise NotImplementedError
-
-    def multiplayer(self, players) -> int:
-        """
-        The multiplayer mode.
+        :return: 0 if player lost, 1 if won
         """
         raise NotImplementedError
 

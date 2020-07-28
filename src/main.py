@@ -3,7 +3,7 @@
 import random
 from typing import List
 from player import Player
-from games.examples import snake, hangman, skribble
+from games import snake, hangman, skribble
 
 
 class Main(object):

@@ -15,7 +15,7 @@ class TextGame(Game, ABC):
         """
         Returns a list of words saved in ./src/words_german.txt.
         """
-        with open('words_english.txt', 'r') as file:
+        with open('/home/lorenzh/Projekte/minigames/res/words_english.txt', 'r') as file:
             words = file.readlines()
         words = [s.strip() for s in words]
 
