@@ -5,7 +5,7 @@ import sys
 import os
 from typing import List
 from player import Player
-from games import skribble, hangman
+from games import skribble, hangman, snake
 
 
 class Main(object):
@@ -18,7 +18,8 @@ class Main(object):
 
         games = [
             skribble.Skribble(),
-            hangman.Hangman()
+            hangman.Hangman(),
+            snake.Snake()
             ]
 
         i = 0
@@ -68,46 +69,46 @@ class Main(object):
 
         return None
 
-    def get_winner_round(self, player: Player):
+    def get_self.winner_round(self, player: Player):
         """
-        Returns the winner of a round.
+        Returns the self.winner of a round.
         """
-        winner: Player = ''
+        self.winner: Player = ''
         inp = ''
-        while inp == '' or winner == player:
+        while inp == '' or self.winner == player:
             inp = input('Wer hat gewonnen? ')
             if inp == '':
                 if input('Niemand? (j/n) ') == 'j':
-                    winner = None
+                    self.winner = None
                     break
             elif inp == player.get_name():
                 print('Der hat gespielt.')
                 inp = ''
             else:
-                winner = self.get_player_by_name(inp)
-                if winner is None:
+                self.winner = self.get_player_by_name(inp)
+                if self.winner is None:
                     inp = ''
                 else:
                     break
 
-        return winner
+        return self.winner
 
-    def get_winner(self):
+    def get_self.winner(self):
         """
-        Returns the winner of the game.
+        Returns the self.winner of the game.
         """
-        winner: str
-        points_winner = 0
+        self.winner: str
+        points_self.winner = 0
         for player in self.players:
             for key, value in player.get_stats().items():
                 print('{}: {}'.format(key, value))
                 if key == 'points':
-                    if value >= points_winner:
-                        winner = player
+                    if value >= points_self.winner:
+                        self.winner = player
             print()
 
-        print('Der Gewinner ist: ' + winner.get_name())
-        return winner
+        print('Der Geself.winner ist: ' + self.winner.get_name())
+        return self.winner
 
     def main(self):
         print('Willkommen bei Lahoumy.')
@@ -135,11 +136,11 @@ class Main(object):
             player.add_round(1)
 
             if multiplayer:
-                player_new: Player = self.get_winner_round(player)
+                player_new: Player = self.get_self.winner_round(player)
                 if player_new is not None:
                     player.add_point(1)
                     player_new.add_point(2)
-                    # the winner is the next player
+                    # the self.winner is the next player
                     player = player_new
             else:
                 # in singleplayer
@@ -154,7 +155,7 @@ class Main(object):
         print()
 
         game.end()
-        self.get_winner()
+        self.get_self.winner()
 
 
 if __name__ == '__main__':

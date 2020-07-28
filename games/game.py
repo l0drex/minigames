@@ -13,6 +13,7 @@ class Game():
         self.running: bool = not (self.get_guess == self.get_solution)
         self.solution: str
         self.guess: str
+        self.multiplayer_mode = False
 
     def get_info(self, key=None) -> Dict:
         """
@@ -24,12 +25,9 @@ class Game():
         """
 
         if key is not None:
-            try:
-                return self.info[key]
-            except KeyError:
-                return None
-        else:
-            return self.info
+            return self.info[key]
+
+        return self.info
 
     def get_running(self) -> bool:
         return self.running
@@ -41,10 +39,37 @@ class Game():
         return self.guess
 
     def set_solution(self, solution):
-        """
-        Defines the solution.
-        """
         self.solution = solution
+
+    def get_winner_round(self, player):
+        """
+        Returns the winner of a round.
+        """
+
+        if not self.multiplayer_mode:
+            return None
+
+        self.winner = ''
+        inp = ''
+        while inp == '' or self.winner == player:
+            inp = input('Wer hat gewonnen? ')
+            if inp == '':
+                if input('Niemand? (j/n) ') == 'j':
+                    self.winner = None
+                    break
+            elif inp == player.get_name():
+                # if input winner was player in current round
+                print('Der hat gespielt.')
+                inp = ''
+            else:
+                # set winner
+                self.winner = self.players[inp]
+                if self.winner is None:
+                    inp = ''
+                else:
+                    break
+
+        return self.winner
 
     def start(self):
         """
@@ -64,7 +89,9 @@ class Game():
 
         raise NotImplementedError
 
-        self.set_solution('Solution')
+        self.multiplayer_mode = players is not None
+
+        self.solution = 'Solution'
 
         if len(players) > 1:
             return self.multiplayer(players)

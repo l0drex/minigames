@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import random
 from typing import Dict
 from .textgame import TextGame
