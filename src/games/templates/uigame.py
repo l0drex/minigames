@@ -1,8 +1,10 @@
 import curses
+from abc import ABC
+
 from .game import Game
 
 
-class UiGame(Game):
+class UiGame(Game, ABC):
     def __init__(self):
         # its a game
         super(Game, self).__init__()
@@ -13,7 +15,7 @@ class UiGame(Game):
         """
         What happens before the first round?
         """
-        print('Willkommen bei ' + self.get_info('name'))
+        print('Welcome to ' + self.get_info('name'))
         print(self.get_info('description'))
         print('\n\n' + input())
         curses.initscr()

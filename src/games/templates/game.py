@@ -1,7 +1,7 @@
 from typing import Dict
 
 
-class Game():
+class Game:
     def __init__(self):
         self.info: Dict = {
             'name': 'Game',
@@ -11,11 +11,11 @@ class Game():
             }
 
         self.running: bool = not (self.get_guess == self.get_solution)
-        self.solution: str
-        self.guess: str
+        self.solution: str = ''
+        self.guess: str = ''
         self.multiplayer_mode = False
 
-    def get_info(self, key=None) -> Dict:
+    def get_info(self, key=None):
         """
         Returns a dictionary with some meta information about the game,
         or you can ask for a specific information
@@ -63,6 +63,7 @@ class Game():
                 inp = ''
             else:
                 # set winner
+                # ToDo
                 self.winner = self.players[inp]
                 if self.winner is None:
                     inp = ''
@@ -79,15 +80,13 @@ class Game():
         print(self.get_info('description'))
         print()
 
-    def gameround(self, players) -> int:
+    def play(self, players) -> int:
         """
         What should happen every round?
         :param players: list of players in the game
         :return: 0 if player lost, 1 if won,
             2 if undefined (e.g. all multiplayers)
         """
-
-        raise NotImplementedError
 
         self.multiplayer_mode = players is not None
 
@@ -102,13 +101,13 @@ class Game():
         """
         The singleplayer mode.
         """
-        return 1
+        raise NotImplementedError
 
-    def mulitplayer(self, players) -> int:
+    def multiplayer(self, players) -> int:
         """
         The multiplayer mode.
         """
-        return 1
+        raise NotImplementedError
 
     def end(self):
         """

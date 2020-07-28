@@ -1,5 +1,5 @@
 from typing import List, Dict
-from .textgame import TextGame
+from games.templates.textgame import TextGame
 
 
 class Hangman(TextGame):
@@ -18,66 +18,65 @@ class Hangman(TextGame):
         self.words = self.get_wordlist()
         self.running: bool = len(self.words) > 0
 
-    def gameround(self, players) -> int:
+    def play(self, players) -> int:
         """
         What should happen every round?
         """
 
         # count mistakes
-        self.tries_left: int = 11
+        tries_left: int = 11
 
         # create guessed word
-        self.guessed: List = []
+        guessed: List = []
 
         # letters guessed
         self.letters: List = []
 
         # define the solution
         if len(players) > 1:
-            self.multiplayer()
+            self.multiplayer(players)
         else:
-            self.singleplayer()
+            self.singleplayer(players[0])
 
         # let the player guess
-        for letter in self.solution:
-            self.guessed.append('_')
+        for _ in self.solution:
+            guessed.append('_')
 
-        while not(''.join(self.guessed) == self.solution):
-            print(''.join(self.guessed))
+        end = 1
+        while not(''.join(guessed) == self.solution):
+            print(''.join(guessed))
 
             # choose a letter
-            inp: chr = input('Buchstabe: ').casefold()
+            inp: chr = input('Letter: ').casefold()
             if inp == '':
-                if input('Abbrechen? ') == 'j':
+                if input('Cancel? ') == 'j':
                     end = 0
             elif inp in self.letters:
-                print('Das hast du schon versucht.')
+                print('You already tried that.')
             elif inp in self.solution:
-                print('Korrekt!')
+                print('Correct!')
                 self.letters.append(inp)
                 for i in range(len(self.solution)):
                     if inp == self.solution[i]:
-                        self.guessed[i] = inp
+                        guessed[i] = inp
             else:
-                print('Leider falsch.')
+                print('Sadly not.')
                 self.letters.append(inp)
-                self.tries_left -= 1
-                print('%i Versuche übrig.' % (self.tries_left, ))
+                tries_left -= 1
+                print('%i tries left.' % (tries_left, ))
 
-                if self.tries_left <= 0:
+                if tries_left <= 0:
                     end = 0
-
-        end = 1
 
         if end == 0:
             print('The solution was ' + self.get_solution())
 
         return end
 
-    def singleplayer(self):
+    def singleplayer(self, players):
         # generate a random word
         self.set_solution(self.get_word().casefold())
 
-    def multiplayer(self):
+    def multiplayer(self, player):
         # let the player choose a word
-        self.set_solution(input('Zu erratendes Wort: '))
+        self.set_solution(input('Word to guess: '))

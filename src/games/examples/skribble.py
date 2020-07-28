@@ -1,9 +1,10 @@
 import random
+from abc import ABC
 from typing import Dict
-from .textgame import TextGame
+from games.templates.textgame import TextGame
 
 
-class Skribble(TextGame):
+class Skribble(TextGame, ABC):
 
     def __init__(self):
         # its a game
@@ -19,13 +20,13 @@ class Skribble(TextGame):
         self.words: [str] = self.get_wordlist()
         self.running: bool = len(self.words) > 0
 
-    def gameround(self, players):
+    def play(self, players):
         """
         Choose a random word.
         """
         n = random.randint(0, (len(self.words)-1))
         self.set_solution(self.words.pop(n))
-        print('Wort: ' + self.get_solution())
-        print('Noch (%i) Wörter.' % (len(self.words), ))
+        print('word: ' + self.get_solution())
+        print('%i words left.' % (len(self.words), ))
 
         return 2

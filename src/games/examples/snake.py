@@ -2,7 +2,7 @@ import curses
 from typing import Dict
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN
 from random import randint
-from .uigame import UiGame
+from games.templates.uigame import UiGame
 
 
 class Snake(UiGame):
@@ -19,7 +19,7 @@ class Snake(UiGame):
             }
         self.running: bool = True
 
-    def gameround(self, players) -> int:
+    def play(self, players) -> int:
         # Initializing values
         self.key = KEY_RIGHT
         self.score = 0
